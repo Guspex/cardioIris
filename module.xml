@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-  <Document name="CardioFlow.ZPM">
+  <Document name="cardioflow.ZPM">
     <Module>
       <Name>cardioflow</Name>
       <Version>1.0.0</Version>
       <Packaging>module</Packaging>
-      <Description>AI agent for cardiovascular surgical flow monitoring using FHIR R4 on InterSystems IRIS</Description>
-      <Keywords>FHIR,AI,Cardiovascular,Interoperability,Claude</Keywords>
+      <Description>CardioFlow — AI-powered cardiovascular surgical flow monitoring with FHIR R4 interoperability on InterSystems IRIS for Health. Integrates Claude AI for real-time clinical risk assessment via an IRIS Interoperability Production.</Description>
+      <Keywords>fhir,ai,cardiovascular,interoperability,claude,llm,intersystems-iris,iris-for-health</Keywords>
+      <HomePage>https://github.com/Guspex/cardioIris</HomePage>
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="CardioFlow.PKG"/>
+      <Invoke Class="CardioFlow.Installer" Method="Setup" Phase="Configure" CheckStatus="true"/>
+      <Invoke Class="CardioFlow.Installer" Method="Teardown" Phase="Unconfigure" CheckStatus="false"/>
     </Module>
   </Document>
 </Export>

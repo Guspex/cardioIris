@@ -7,6 +7,7 @@ USER irisowner
 WORKDIR /home/irisowner
 
 COPY --chown=irisowner:irisowner src/ ./src/
+COPY --chown=irisowner:irisowner python/ ./python/
 COPY --chown=irisowner:irisowner data/ ./data/
 COPY --chown=irisowner:irisowner dashboard/ ./dashboard/
 COPY --chown=irisowner:irisowner tests/ ./tests/

@@ -21,7 +21,12 @@ Method OnRequest(pRequest As CardioFlow.Interop.AgentRequest, Output pResponse A
 Method CallPythonAgent(pPatientId As %String, pIRISBase As %String) As %String [ Language = python ]
 {
     import sys, os, json
-    sys.path.insert(0, '/home/irisowner/src/CardioFlow/AI')
+    try:
+        import iris as _iris
+        _path = _iris.gref('^CardioFlow.Config')['PYTHON_PATH']
+    except Exception:
+        _path = None
+    sys.path.insert(0, _path or '/home/irisowner/python')
     try:
         from Agent import run_agent
         api_key = os.environ.get("ANTHROPIC_API_KEY", "")
@@ -35,6 +40,11 @@ Method CallPythonAgent(pPatientId As %String, pIRISBase As %String) As %String [
             "suggestedNextStatus": "",
             "escalate": False
         })
+}
+
+Storage Default
+{
+<Type>%Storage.Persistent</Type>
 }
 
 }

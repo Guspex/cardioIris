@@ -174,7 +174,12 @@ ClassMethod AnalyzePatient(patientId As %String) As %Status
 ClassMethod CallAIAgent(bundleJson As %String, apiKey As %String) As %String [ Language = python ]
 {
     import sys, os, json, importlib
-    sys.path.insert(0, '/home/irisowner/src/CardioFlow/AI')
+    try:
+        import iris as _iris
+        _path = _iris.gref('^CardioFlow.Config')['PYTHON_PATH']
+    except Exception:
+        _path = None
+    sys.path.insert(0, _path or '/home/irisowner/python')
     try:
         import Agent
         importlib.reload(Agent)

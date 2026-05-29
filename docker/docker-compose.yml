@@ -10,6 +10,7 @@ services:
       - "1972:1972"
     volumes:
       - ../src:/home/irisowner/src:ro
+      - ../python:/home/irisowner/python:ro
       - ../dashboard:/home/irisowner/dashboard:ro
     healthcheck:
       test: ["CMD-SHELL", "iris qlist IRIS | grep -q running"]
