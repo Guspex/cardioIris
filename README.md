@@ -1,41 +1,28 @@
 # IRIS-CardioFlow
 
-IRIS-CardioFlow is a cardiovascular surgical flow monitoring demo built on top of InterSystems IRIS 2026.
+IRIS-CardioFlow is a streamlined cardiovascular surgical flow monitoring demo built on top of InterSystems IRIS 2026.
 
-The current runtime model is:
+This repository now contains only the files required to run the product:
+
+- Docker runtime for IRIS
+- IRIS classes used by the current demo
+- Seeded simulation data logic
+- Browser dashboard
+- Local proxy that removes direct browser authentication against IRIS
+- Startup scripts
+
+## Runtime architecture
 
 - Docker runs the IRIS container.
-- PowerShell bootstrap scripts compile the classes, publish the REST applications, create the technical API user, and seed the simulation data.
-- A local gateway serves the browser UI without direct browser authentication against IRIS.
-- The browser connects only to the local product URL.
+- PowerShell bootstrap scripts compile the IRIS classes, publish the REST API, create the technical API user, and seed the simulation dataset.
+- A local Python gateway serves the product UI and proxies API requests to IRIS.
+- The browser talks only to the local product URL.
 
-## Architecture in this workspace
+## Main URLs
 
-- IRIS container: `cardioflow-iris`
-- IRIS API base: `http://localhost:52773/api/cardio`
-- Local product gateway: `http://127.0.0.1:8787`
-- Technical API user: `cardioapi`
-- Technical API password: `Cardio123!`
-
-## Scenario packs
-
-The seeded demo includes three scenario packs:
-
-- Emergency escalation
-- Delayed surgery
-- Recovery escalation
-
-Each scenario pack creates:
-
-- 1 waiting case
-- 1 in-surgery case
-- 1 post-op case
-
-Expected seeded totals:
-
-- `AWAITING = 3`
-- `IN_SURGERY = 3`
-- `POST_OP = 3`
+- Product UI: `http://127.0.0.1:8787/`
+- Product API proxy: `http://127.0.0.1:8787/api/cardio/...`
+- IRIS API direct: `http://localhost:52773/api/cardio/...`
 
 ## Prerequisites
 
@@ -45,9 +32,9 @@ Before starting, make sure you have:
 2. Python available on PATH
 3. PowerShell available
 
-## How to start Docker and the IRIS runtime
+## Start the product
 
-### Option A: Full product startup in one command
+### One-command startup
 
 Run:
 
@@ -55,76 +42,78 @@ Run:
 powershell -ExecutionPolicy Bypass -File bin/start-product.ps1
 ```
 
-What this does:
+What this command does:
 
-1. Starts or reuses the Docker container defined in [docker/docker-compose.yml](docker/docker-compose.yml)
-2. Loads and compiles the analytics, simulation, API, and UI classes into IRIS
-3. Recreates the technical API user and publishes the IRIS applications
-4. Seeds the database with the U.S. scenario-pack data
-5. Starts the local product gateway on `http://127.0.0.1:8787`
+1. Starts or reuses the IRIS container from [docker/docker-compose.yml](docker/docker-compose.yml)
+2. Loads and compiles the IRIS classes that power the demo
+3. Recreates the technical API user and republishes the REST application
+4. Seeds the scenario-pack data into IRIS
+5. Starts the local browser-facing proxy on `http://127.0.0.1:8787`
 
-Keep that terminal open while using the product, because it runs the local gateway.
+Keep that terminal open while using the product because it runs the proxy server.
 
-### Option B: Step-by-step startup
+### Step-by-step startup
 
-#### 1. Build and start Docker
+#### 1. Start Docker
 
 ```powershell
 docker compose -f docker/docker-compose.yml up -d --build
 ```
 
-#### 2. Bootstrap the IRIS runtime and seed the data
+#### 2. Bootstrap IRIS and seed the product data
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File bin/run-simulation.ps1
 ```
 
-This script:
+This script compiles the active demo classes and seeds the product data.
 
-1. Loads [src/CardioFlow/Analytics/SurgeryStatus.cls](src/CardioFlow/Analytics/SurgeryStatus.cls)
-2. Loads [src/CardioFlow/Sim/Runner.cls](src/CardioFlow/Sim/Runner.cls)
-3. Loads [src/CardioFlow/API/DashboardDispatch.cls](src/CardioFlow/API/DashboardDispatch.cls)
-4. Loads [src/CardioFlow/UI/DashboardPage.cls](src/CardioFlow/UI/DashboardPage.cls)
-5. Creates the `cardioapi` user
-6. Publishes `/api/cardio`
-7. Seeds the simulation records in IRIS
-
-#### 3. Start the local gateway
+#### 3. Start the local product proxy
 
 ```powershell
 python bin/cardioflow_proxy.py
 ```
 
-When it starts, you should see output like:
+Expected startup output:
 
 ```text
 CardioFlow proxy running on http://127.0.0.1:8787
 Proxying IRIS API from http://localhost:52773
 ```
 
-## How to open the product
+## Scenario packs
 
-Open this URL in your browser:
+The demo seeds three scenario packs:
 
-```text
-http://127.0.0.1:8787/
-```
+- Emergency escalation
+- Delayed surgery
+- Recovery escalation
 
-This is the recommended entry point for the product.
+Each scenario pack contributes:
 
-The browser-facing app does not require you to type IRIS credentials.
+- 1 waiting case
+- 1 in-surgery case
+- 1 post-op case
 
-## How to test the product
+Expected totals:
 
-### 1. Verify Docker and IRIS are running
+- `AWAITING = 3`
+- `IN_SURGERY = 3`
+- `POST_OP = 3`
+
+## How to test
+
+### 1. Verify the IRIS container is running
 
 ```powershell
 docker ps --filter name=cardioflow-iris
 ```
 
-You should see the container up and healthy.
+Expected result:
 
-### 2. Verify the product gateway is running
+- The container `cardioflow-iris` is up
+
+### 2. Verify the product UI is served by the proxy
 
 ```powershell
 curl http://127.0.0.1:8787/
@@ -132,9 +121,9 @@ curl http://127.0.0.1:8787/
 
 Expected result:
 
-- HTML content starting with `<!DOCTYPE html>`
+- HTML output beginning with `<!DOCTYPE html>`
 
-### 3. Verify the summary API through the local gateway
+### 3. Verify the summary API through the proxy
 
 ```powershell
 curl http://127.0.0.1:8787/api/cardio/dashboards/summary
@@ -146,7 +135,7 @@ Expected result:
 {"summary":[{"status":"AWAITING","total":3},{"status":"IN_SURGERY","total":3},{"status":"POST_OP","total":3}]}
 ```
 
-### 4. Verify the full overview dataset
+### 4. Verify the overview dataset
 
 ```powershell
 curl http://127.0.0.1:8787/api/cardio/dashboards/overview
@@ -164,13 +153,13 @@ Expected result:
 curl http://127.0.0.1:8787/api/cardio/patient/FHIR-TEST-001/status
 ```
 
-Expected result includes:
+Expected fields include:
 
 - `patientName = Olivia Stone`
 - `hospitalCode = BOSTON-HEART`
 - `scenarioTag = EMERGENCY_ESCALATION`
 
-### 6. Verify the dashboard UI manually
+### 6. Verify the dashboard manually
 
 Open:
 
@@ -178,23 +167,23 @@ Open:
 http://127.0.0.1:8787/
 ```
 
-Then confirm that:
+Expected UI state:
 
-1. The counters show `3 waiting`, `3 in surgery`, and `3 post-op`
-2. The hospital filter shows:
+1. Counters show `3 waiting`, `3 in surgery`, `3 post-op`
+2. Hospital filter shows:
 	`BOSTON-HEART`, `CHICAGO-CARDIAC`, `SEATTLE-MED`
-3. The scenario filter shows:
+3. Scenario filter shows:
 	`Emergency escalation`, `Delayed surgery`, `Recovery escalation`
-4. The pre-op board shows:
+4. Waiting cases:
 	`James Wilson`, `Emma Carter`, `Noah Brooks`
-5. The in-surgery board shows:
+5. In-surgery cases:
 	`Olivia Stone`, `Ethan Clark`, `Sophia Reed`
-6. The recovery board shows:
+6. Post-op cases:
 	`Olivia Stone`, `Ava Morgan`, `Liam Turner`
 
 ### 7. Verify filters and search
 
-Try these UI checks:
+Suggested checks:
 
 1. Choose hospital `BOSTON-HEART`
 	Expected: only Boston Heart cases remain visible
@@ -203,32 +192,26 @@ Try these UI checks:
 3. Search for `Olivia`
 	Expected: only Olivia Stone records remain visible
 4. Choose status `POST_OP`
-	Expected: only post-op cards remain visible
+	Expected: only post-op records remain visible
 
-## How to stop the product
+## Stop the product
 
-### Stop only the local gateway
+### Stop the local proxy
 
-Press `Ctrl+C` in the terminal where `python bin/cardioflow_proxy.py` or `bin/start-product.ps1` is running.
+Press `Ctrl+C` in the terminal running `python bin/cardioflow_proxy.py` or `bin/start-product.ps1`.
 
-### Stop the Docker container
+### Stop Docker
 
 ```powershell
 docker compose -f docker/docker-compose.yml down
 ```
 
-## Useful files
+## Kept runtime files
 
 - Product UI: [dashboard/index.html](dashboard/index.html)
-- Local gateway: [bin/cardioflow_proxy.py](bin/cardioflow_proxy.py)
-- One-command product startup: [bin/start-product.ps1](bin/start-product.ps1)
+- Local product proxy: [bin/cardioflow_proxy.py](bin/cardioflow_proxy.py)
+- One-command startup: [bin/start-product.ps1](bin/start-product.ps1)
 - IRIS bootstrap and seeding: [bin/run-simulation.ps1](bin/run-simulation.ps1)
 - REST API: [src/CardioFlow/API/DashboardDispatch.cls](src/CardioFlow/API/DashboardDispatch.cls)
-- Seeded simulation data: [src/CardioFlow/Sim/Runner.cls](src/CardioFlow/Sim/Runner.cls)
-
-## Original design references
-
-The original design and orchestration documents are still available here:
-
-- [CARDIOFLOW-MASTER.md](CARDIOFLOW-MASTER.md)
-- [SDD.md](SDD.md)
+- Simulation logic: [src/CardioFlow/Sim/Runner.cls](src/CardioFlow/Sim/Runner.cls)
+- IRIS persistence model: [src/CardioFlow/Analytics/SurgeryStatus.cls](src/CardioFlow/Analytics/SurgeryStatus.cls)
