@@ -27,3 +27,4 @@ src/CardioFlow/DTL/*.cls
 iris-agentic-dev.toml.local
 
 CLAUDE_CODE_PLAN.md
+.gitignore
