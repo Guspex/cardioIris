@@ -173,12 +173,13 @@ ClassMethod AnalyzePatient(patientId As %String) As %Status
 
 ClassMethod CallAIAgent(bundleJson As %String, apiKey As %String) As %String [ Language = python ]
 {
-    import sys, os, json
+    import sys, os, json, importlib
     sys.path.insert(0, '/home/irisowner/src/CardioFlow/AI')
     try:
-        from Agent import analyze_patient_bundle
+        import Agent
+        importlib.reload(Agent)
         bundle = json.loads(bundleJson)
-        result = analyze_patient_bundle(bundle, apiKey)
+        result = Agent.analyze_patient_bundle(bundle, apiKey)
         return json.dumps(result)
     except Exception as e:
         return json.dumps({

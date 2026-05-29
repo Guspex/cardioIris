@@ -1,4 +1,5 @@
 import json
+import re
 import urllib.request
 import urllib.error
 
@@ -59,8 +60,10 @@ def analyze_patient_bundle(fhir_bundle: dict, api_key: str) -> dict:
     with urllib.request.urlopen(req, timeout=30) as resp:
         response_data = json.loads(resp.read().decode("utf-8"))
 
-    raw_text = response_data["content"][0]["text"]
-    return json.loads(raw_text)
+    raw_text = response_data["content"][0]["text"].strip()
+    # strip markdown code fences if present
+    match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", raw_text, re.DOTALL)
+    return json.loads(match.group(1) if match else raw_text)
 
 
 def run_agent(patient_id: str, iris_api_base: str, api_key: str) -> dict:

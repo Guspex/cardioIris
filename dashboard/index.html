@@ -403,7 +403,15 @@
       el.innerHTML = '<em style="color:var(--muted)">Analyzing with Claude AI...</em>';
       try {
         const res = await fetch(`${apiBase}/ai/analyze/${encodeURIComponent(patientId)}`);
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text ? JSON.parse(text)?.error ?? text : `HTTP ${res.status}`);
+        }
         const data = await res.json();
+        if (data.riskLevel === 'UNKNOWN' && data.recommendation?.includes('API_KEY')) {
+          el.innerHTML = '<em style="color:var(--muted)">AI analysis requires ANTHROPIC_API_KEY. See README.</em>';
+          return;
+        }
         if (data.error && !data.riskLevel) throw new Error(data.error);
         const escalateFlag = data.escalate
           ? ' &nbsp;<strong style="color:#b6412c">&#9650; ESCALATE</strong>'
