@@ -9,6 +9,9 @@ iris.cpf.bak
 # Build artifacts
 *.int
 *.obj
+*.pyc
+__pycache__/
+bin/iris-dev.exe
 
 # Generated BPL/DTL classes
 src/CardioFlow/BP/*.cls
