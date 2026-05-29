@@ -1,0 +1,174 @@
+<svg width="100%" viewBox="0 0 690 430" role="img" xmlns="http://www.w3.org/2000/svg" style="">
+<title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">IRIS-CardioFlow — Sistema de Monitoramento Cirúrgico Cardiológico</title>
+<desc style="fill:rgb(0, 0, 0);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Arte conceitual mostrando um coração estilizado integrado com fluxos de dados digitais e o pipeline HL7/FHIR/SDA3 do sistema IRIS-CardioFlow.</desc>
+
+<defs>
+  
+
+  <!-- ECG pulse clip -->
+  <clipPath id="clip-left">
+    <rect x="0" y="0" width="200" height="420"/>
+  </clipPath>
+  <clipPath id="clip-right">
+    <rect x="480" y="0" width="200" height="420"/>
+  </clipPath>
+  <clipPath id="clip-center">
+    <rect x="180" y="60" width="320" height="300"/>
+  </clipPath>
+<mask id="imagine-text-gaps-60lkmo" maskUnits="userSpaceOnUse"><rect x="0" y="0" width="690" height="430" fill="white"/><rect x="16" y="57" width="76.95458984375" height="15" fill="black" rx="2"/><rect x="15" y="73" width="66.78125" height="13" fill="black" rx="2"/><rect x="31" y="385" width="43.7890625" height="13" fill="black" rx="2"/><rect x="31" y="400" width="61.3828125" height="13" fill="black" rx="2"/><rect x="511" y="57" width="94.1240234375" height="15" fill="black" rx="2"/><rect x="511" y="73" width="56.984375" height="13" fill="black" rx="2"/><rect x="520" y="385" width="78.9765625" height="13" fill="black" rx="2"/><rect x="520" y="400" width="48.1875" height="13" fill="black" rx="2"/><rect x="255.3046875" y="125" width="37.4921875" height="13" fill="black" rx="2"/><rect x="305.203125" y="125" width="27.6953125" height="13" fill="black" rx="2"/><rect x="350.203125" y="125" width="27.6953125" height="13" fill="black" rx="2"/><rect x="394.203125" y="125" width="27.6953125" height="13" fill="black" rx="2"/><rect x="226.4765625" y="283" width="39.046875" height="14" fill="black" rx="2"/><rect x="291.5390625" y="283" width="65.7333984375" height="14" fill="black" rx="2"/><rect x="379.4765625" y="283" width="39.046875" height="14" fill="black" rx="2"/><rect x="226.453125" y="20" width="228.140625" height="34" fill="black" rx="2"/><rect x="162.421875" y="49" width="354.15625" height="17" fill="black" rx="2"/><rect x="256" y="321" width="100.97052001953125" height="16" fill="black" rx="2"/><rect x="332.09375" y="321" width="15" height="16" fill="black" rx="2"/><rect x="352.21875" y="321" width="71.9803466796875" height="16" fill="black" rx="2"/><rect x="256" y="338" width="128.71875" height="14" fill="black" rx="2"/><rect x="300.53125" y="338" width="123.46875" height="14" fill="black" rx="2"/><rect x="232.6328125" y="365" width="215.328125" height="13" fill="black" rx="2"/></mask></defs>
+
+<!-- ═══ BACKGROUND — deep navy panels ════════════════════════════════ -->
+<rect x="0" y="0" width="680" height="420" fill="#f0f5f8" style="fill:rgb(240, 245, 248);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Left panel -->
+<rect x="0" y="0" width="185" height="420" fill="#0c1e2e" rx="0" style="fill:rgb(12, 30, 46);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<!-- Right panel -->
+<rect x="495" y="0" width="185" height="420" fill="#0c1e2e" rx="0" style="fill:rgb(12, 30, 46);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<!-- Center subtle bg -->
+<rect x="185" y="0" width="310" height="420" fill="#e8f1f6" style="fill:rgb(232, 241, 246);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- ═══ ECG LINES — left panel ════════════════════════════════════════ -->
+<!-- Grid lines -->
+<line x1="20" y1="100" x2="165" y2="100" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="20" y1="160" x2="165" y2="160" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="20" y1="220" x2="165" y2="220" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="20" y1="280" x2="165" y2="280" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="20" y1="340" x2="165" y2="340" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="60" y1="80" x2="60" y2="380" stroke="#1a3a52" stroke-width="0.5" mask="url(#imagine-text-gaps-60lkmo)" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="110" y1="80" x2="110" y2="380" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- ECG trace 1 — bright teal -->
+<polyline points="20,210 40,210 48,210 52,175 56,250 60,210 72,210 76,195 80,210 95,210 99,175 103,250 107,210 130,210 134,195 138,210 165,210" fill="none" stroke="#00c9b1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:rgb(0, 201, 177);color:rgb(255, 255, 255);stroke-width:1.8px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- ECG trace 2 — dimmer, offset -->
+<polyline points="20,290 38,290 44,290 48,268 52,315 56,290 70,290 74,280 78,290 95,290 99,268 103,315 107,290 128,290 132,280 136,290 165,290" fill="none" stroke="#2a7a9a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7" style="fill:none;stroke:rgb(42, 122, 154);color:rgb(255, 255, 255);stroke-width:1.2px;stroke-linecap:round;stroke-linejoin:round;opacity:0.7;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- ECG trace 3 — very dim -->
+<polyline points="20,350 45,350 50,340 55,360 60,350 90,350 95,340 100,360 105,350 140,350 145,340 150,360 155,350 165,350" fill="none" stroke="#1a4a6a" stroke-width="1" opacity="0.5" stroke-linecap="round" style="fill:none;stroke:rgb(26, 74, 106);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Labels left panel -->
+<text x="20" y="68" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:9.5px;font-weight:600;text-anchor:start;dominant-baseline:auto">ECG · VITALS</text>
+<text x="20" y="82" style="font-family:monospace;font-size:8px;fill:#2a7a9a;;fill:rgb(42, 122, 154);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8px;font-weight:400;text-anchor:start;dominant-baseline:auto">MONITOR ATIVO</text>
+
+<!-- Status dots left -->
+<circle cx="26" cy="390" r="4" fill="#00c9b1" style="fill:rgb(0, 201, 177);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="35" y="394" style="font-family:monospace;font-size:8px;fill:#7ec8e3;;fill:rgb(126, 200, 227);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8px;font-weight:400;text-anchor:start;dominant-baseline:auto">SR  72bpm</text>
+<circle cx="26" cy="405" r="4" fill="#e05c3a" style="fill:rgb(224, 92, 58);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="35" y="409" style="font-family:monospace;font-size:8px;fill:#e8887a;;fill:rgb(232, 136, 122);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8px;font-weight:400;text-anchor:start;dominant-baseline:auto">PVC detected</text>
+
+<!-- ═══ ECG LINES — right panel ══════════════════════════════════════ -->
+<!-- Grid lines right -->
+<line x1="515" y1="100" x2="660" y2="100" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="515" y1="160" x2="660" y2="160" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="515" y1="220" x2="660" y2="220" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="515" y1="280" x2="660" y2="280" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="515" y1="340" x2="660" y2="340" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="560" y1="80" x2="560" y2="380" stroke="#1a3a52" stroke-width="0.5" mask="url(#imagine-text-gaps-60lkmo)" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="615" y1="80" x2="615" y2="380" stroke="#1a3a52" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(26, 58, 82);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- ECG trace right — amber/warm -->
+<polyline points="515,220 535,220 540,220 544,188 548,255 552,220 565,220 569,205 573,220 588,220 592,188 596,255 600,220 622,220 626,205 630,220 660,220" fill="none" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:rgb(245, 166, 35);color:rgb(255, 255, 255);stroke-width:1.8px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- ECG trace right dim -->
+<polyline points="515,300 535,300 540,300 544,280 548,320 552,300 568,300 572,285 576,300 590,300 594,280 598,320 602,300 630,300 634,285 638,300 660,300" fill="none" stroke="#8a5a20" stroke-width="1" opacity="0.6" stroke-linecap="round" stroke-linejoin="round" style="fill:none;stroke:rgb(138, 90, 32);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;opacity:0.6;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Labels right panel -->
+<text x="515" y="68" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:9.5px;font-weight:600;text-anchor:start;dominant-baseline:auto">PIPELINE · DATA</text>
+<text x="515" y="82" style="font-family:monospace;font-size:8px;fill:#2a7a9a;;fill:rgb(42, 122, 154);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8px;font-weight:400;text-anchor:start;dominant-baseline:auto">IRIS 2026.1</text>
+
+<!-- Status dots right -->
+<circle cx="515" cy="390" r="4" fill="#f5a623" style="fill:rgb(245, 166, 35);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="524" y="394" style="font-family:monospace;font-size:8px;fill:#f5c870;;fill:rgb(245, 200, 112);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8px;font-weight:400;text-anchor:start;dominant-baseline:auto">HL7 · msgs: 2847</text>
+<circle cx="515" cy="405" r="4" fill="#00c9b1" style="fill:rgb(0, 201, 177);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="524" y="409" style="font-family:monospace;font-size:8px;fill:#7ec8e3;;fill:rgb(126, 200, 227);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8px;font-weight:400;text-anchor:start;dominant-baseline:auto">FHIR · OK</text>
+
+<!-- ═══ CENTER — coração estilizado ══════════════════════════════════ -->
+
+<!-- Halo externo sutil -->
+<ellipse cx="340" cy="210" rx="118" ry="108" fill="#cce4f0" opacity="0.45" style="fill:rgb(204, 228, 240);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.45;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<ellipse cx="340" cy="210" rx="96" ry="88" fill="#b8d8ec" opacity="0.4" style="fill:rgb(184, 216, 236);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Coração — corpo principal (duas metades arredondadas + triângulo) -->
+<!-- Metade esquerda superior -->
+<path d="M340,175 C340,175 305,148 290,155 C272,163 268,183 278,198 C290,215 340,252 340,252" fill="#c0392b" stroke="#922b21" stroke-width="1" style="fill:rgb(192, 57, 43);stroke:rgb(146, 43, 33);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<!-- Metade direita superior -->
+<path d="M340,175 C340,175 375,148 390,155 C408,163 412,183 402,198 C390,215 340,252 340,252" fill="#e74c3c" stroke="#c0392b" stroke-width="1" style="fill:rgb(231, 76, 60);stroke:rgb(192, 57, 43);color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<!-- Ponta inferior -->
+<path d="M278,198 C290,215 340,265 340,265 C340,265 390,215 402,198" fill="#c0392b" stroke="none" style="fill:rgb(192, 57, 43);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Highlight brilho -->
+<ellipse cx="316" cy="172" rx="14" ry="8" fill="#f1948a" opacity="0.5" transform="rotate(-25,316,172)" style="fill:rgb(241, 148, 138);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Batimento dentro do coração — linha ECG branca -->
+<polyline points="295,210 308,210 312,210 315,195 318,225 321,210 328,210 331,202 334,210 347,210 350,195 353,225 356,210 368,210 371,202 374,210 385,210" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" style="fill:none;stroke:rgb(255, 255, 255);color:rgb(255, 255, 255);stroke-width:2px;stroke-linecap:round;stroke-linejoin:round;opacity:0.85;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- ═══ CONECTORES laterais — setas de dados ══════════════════════════ -->
+
+<!-- Connector left → heart -->
+<line x1="185" y1="175" x2="266" y2="185" stroke="#00c9b1" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-teal)" style="fill:rgb(0, 0, 0);stroke:rgb(0, 201, 177);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-dasharray:4px, 3px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="185" y1="210" x2="270" y2="207" stroke="#00c9b1" stroke-width="1" stroke-dasharray="3,3" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(0, 201, 177);color:rgb(255, 255, 255);stroke-width:1px;stroke-dasharray:3px, 3px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="185" y1="245" x2="266" y2="232" stroke="#2a7a9a" stroke-width="1" stroke-dasharray="3,3" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(42, 122, 154);color:rgb(255, 255, 255);stroke-width:1px;stroke-dasharray:3px, 3px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Connector heart → right -->
+<line x1="414" y1="185" x2="495" y2="175" stroke="#f5a623" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-amber)" style="fill:rgb(0, 0, 0);stroke:rgb(245, 166, 35);color:rgb(255, 255, 255);stroke-width:1.5px;stroke-dasharray:4px, 3px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="412" y1="210" x2="495" y2="210" stroke="#f5a623" stroke-width="1" stroke-dasharray="3,3" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(245, 166, 35);color:rgb(255, 255, 255);stroke-width:1px;stroke-dasharray:3px, 3px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<line x1="414" y1="232" x2="495" y2="245" stroke="#f5c870" stroke-width="1" stroke-dasharray="3,3" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(245, 200, 112);color:rgb(255, 255, 255);stroke-width:1px;stroke-dasharray:3px, 3px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Definir markers de seta coloridas inline -->
+<defs>
+  <marker id="arr-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#00c9b1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#f5a623" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ═══ PILLS de tecnologia — acima do coração ════════════════════════ -->
+<rect x="255" y="122" width="38" height="16" rx="8" fill="#1a6b8a" style="fill:rgb(26, 107, 138);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="274" y="134" text-anchor="middle" style="font-size:8px;;fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8px;font-weight:600;text-anchor:middle;dominant-baseline:auto">HL7 v2</text>
+
+<rect x="301" y="122" width="36" height="16" rx="8" fill="#1a6b8a" style="fill:rgb(26, 107, 138);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="319" y="134" text-anchor="middle" style="font-size:8px;;fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8px;font-weight:600;text-anchor:middle;dominant-baseline:auto">FHIR</text>
+
+<rect x="345" y="122" width="38" height="16" rx="8" fill="#0e4a62" style="fill:rgb(14, 74, 98);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="364" y="134" text-anchor="middle" style="font-size:8px;;fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8px;font-weight:600;text-anchor:middle;dominant-baseline:auto">SDA3</text>
+
+<rect x="391" y="122" width="34" height="16" rx="8" fill="#0e4a62" style="fill:rgb(14, 74, 98);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="408" y="134" text-anchor="middle" style="font-size:8px;;fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8px;font-weight:600;text-anchor:middle;dominant-baseline:auto">IRIS</text>
+
+<!-- ═══ STATUS BADGES — abaixo do coração ════════════════════════════ -->
+<!-- Pré-Op -->
+<rect x="215" y="278" width="62" height="22" rx="4" fill="#1a6b8a" style="fill:rgb(26, 107, 138);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="246" y="293" text-anchor="middle" style="font-size:8.5px;;fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8.5px;font-weight:600;text-anchor:middle;dominant-baseline:auto">PRÉ-OP</text>
+
+<!-- Em Cirurgia -->
+<rect x="285" y="278" width="78" height="22" rx="4" fill="#c0392b" style="fill:rgb(192, 57, 43);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="324" y="293" text-anchor="middle" style="font-size:8.5px;;fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8.5px;font-weight:600;text-anchor:middle;dominant-baseline:auto">EM CIRURGIA</text>
+
+<!-- Pós-Op -->
+<rect x="371" y="278" width="56" height="22" rx="4" fill="#1a6b8a" style="fill:rgb(26, 107, 138);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="399" y="293" text-anchor="middle" style="font-size:8.5px;;fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8.5px;font-weight:600;text-anchor:middle;dominant-baseline:auto">PÓS-OP</text>
+
+<!-- ═══ TÍTULO CENTRAL ════════════════════════════════════════════════ -->
+<text x="340" y="46" text-anchor="middle" style="fill:rgb(232, 240, 245);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Georgia, serif;font-size:26px;font-weight:700;text-anchor:middle;dominant-baseline:auto">IRIS-CardioFlow</text>
+<text x="340" y="62" text-anchor="middle" style="fill:rgb(138, 175, 196);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Georgia, serif;font-size:11px;font-weight:400;text-anchor:middle;dominant-baseline:auto">MONITORAMENTO CIRÚRGICO CARDIOLÓGICO</text>
+
+<!-- Linha divisória abaixo do título -->
+<line x1="240" y1="70" x2="440" y2="70" stroke="#2a7a9a" stroke-width="0.5" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(42, 122, 154);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- ═══ RODAPÉ central — métricas estilizadas ════════════════════════ -->
+<line x1="240" y1="316" x2="440" y2="316" stroke="#2a7a9a" stroke-width="0.5" opacity="0.5" style="fill:rgb(0, 0, 0);stroke:rgb(42, 122, 154);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<text x="260" y="332" style="fill:rgb(126, 200, 227);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:10px;font-weight:400;text-anchor:start;dominant-baseline:auto">BPL · DTL · SDA3</text>
+<text x="340" y="332" text-anchor="middle" style="fill:#c0392b;font-weight:700;;fill:rgb(192, 57, 43);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:10px;font-weight:700;text-anchor:middle;dominant-baseline:auto">♥</text>
+<text x="420" y="332" text-anchor="end" style="fill:rgb(126, 200, 227);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:10px;font-weight:400;text-anchor:end;dominant-baseline:auto">IRIS 2026.1</text>
+
+<text x="260" y="348" style="font-size:9px;fill:#4a6070;;fill:rgb(74, 96, 112);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:9px;font-weight:400;text-anchor:start;dominant-baseline:auto">HL7 ADT · ORM · FHIR R4</text>
+<text x="420" y="348" text-anchor="end" style="font-size:9px;fill:#4a6070;;fill:rgb(74, 96, 112);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:9px;font-weight:400;text-anchor:end;dominant-baseline:auto">Columnar BI · REST API</text>
+
+<!-- Linha base e crédito -->
+<line x1="240" y1="360" x2="440" y2="360" stroke="#2a7a9a" stroke-width="0.5" opacity="0.3" style="fill:rgb(0, 0, 0);stroke:rgb(42, 122, 154);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.3;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="340" y="374" text-anchor="middle" style="font-family:monospace;font-size:8px;fill:#8aafc4;;fill:rgb(138, 175, 196);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:monospace;font-size:8px;font-weight:400;text-anchor:middle;dominant-baseline:auto">bplus · intersystems-community/iris-agentic-dev</text>
+
+</svg>

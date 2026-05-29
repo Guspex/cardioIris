@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transform sourceClass="CardioFlow.Msg.FHIRRequest"
+           targetClass="HS.SDA3.Container"
+           create="new"
+           language="objectscript"
+           ignoreMissing="1"
+           reportErrors="1"
+           xmlns="http://www.intersystems.com/dtl">
+
+  <code><![CDATA[
+    set bundle = {}
+    do bundle.%FromJSON(source.Payload)
+
+    set entries = bundle.entry
+    if '$isobject(entries) {
+        quit
+    }
+
+    set iterator = entries.%GetIterator()
+    while iterator.%GetNext(.index, .entry) {
+        set resource = entry.resource
+        if '$isobject(resource) {
+            continue
+        }
+
+        set resourceType = resource.resourceType
+
+        if resourceType = "Patient" {
+            set target.Patient.PatientNumbers.(1).Number = resource.id
+            if $isobject(resource.name) {
+                set patientName = resource.name.%Get(0)
+                if $isobject(patientName) {
+                    set target.Patient.Name.FamilyName = patientName.family
+                    if $isobject(patientName.given) {
+                        set target.Patient.Name.GivenName = patientName.given.%Get(0)
+                    }
+                }
+            }
+            set target.Patient.BirthTime = resource.birthDate
+            set target.Patient.Gender.Code = resource.gender
+        }
+
+        if resourceType = "Encounter" {
+            set code = $case(resource.status,
+                "planned":"PRE",
+                "in-progress":"SURG",
+                "finished":"REC",
+                :"PRE")
+            set target.Encounters.(1).AdmissionType.Code = code
+            if $isobject(resource.period) {
+                set target.Encounters.(1).StartTime = resource.period.start
+                set target.Encounters.(1).EndTime = resource.period.end
+            }
+        }
+
+        if resourceType = "Procedure" {
+            set target.Procedures.(1).ExternalId = resource.id
+            if $isobject(resource.code) && $isobject(resource.code.coding) {
+                set coding = resource.code.coding.%Get(0)
+                if $isobject(coding) {
+                    set target.Procedures.(1).Procedure.Code = coding.code
+                    set target.Procedures.(1).Procedure.Description = coding.display
+                }
+            }
+            set target.Procedures.(1).ProcedureTime = resource.performedDateTime
+        }
+    }
+  ]]></code>
+</transform>

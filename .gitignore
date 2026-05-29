@@ -1,0 +1,24 @@
+# IRIS runtime files
+*.lck
+*.pid
+*.log
+*.journal
+mgr/
+iris.cpf.bak
+
+# Build artifacts
+*.int
+*.obj
+
+# Generated BPL/DTL classes
+src/CardioFlow/BP/*.cls
+src/CardioFlow/DTL/*.cls
+
+# Editor
+.DS_Store
+.vscode/settings.json
+
+# Secrets and local config
+*.env
+.env.local
+iris-agentic-dev.toml.local

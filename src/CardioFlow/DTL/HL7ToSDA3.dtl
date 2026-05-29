@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transform sourceClass="EnsLib.HL7.Message"
+           targetClass="HS.SDA3.Container"
+           create="new"
+           language="objectscript"
+           ignoreMissing="1"
+           reportErrors="1"
+           xmlns="http://www.intersystems.com/dtl">
+
+  <assign value="source.GetValueAt(&quot;PID:3.1&quot;)" property="target.Patient.PatientNumbers.(1).Number" action="set"/>
+  <assign value="source.GetValueAt(&quot;PID:3.4&quot;)" property="target.Patient.PatientNumbers.(1).Organization.Code" action="set"/>
+  <assign value="source.GetValueAt(&quot;PID:5.1&quot;)" property="target.Patient.Name.FamilyName" action="set"/>
+  <assign value="source.GetValueAt(&quot;PID:5.2&quot;)" property="target.Patient.Name.GivenName" action="set"/>
+  <assign value="source.GetValueAt(&quot;PID:7&quot;)" property="target.Patient.BirthTime" action="set"/>
+  <assign value="source.GetValueAt(&quot;PID:8&quot;)" property="target.Patient.Gender.Code" action="set"/>
+  <assign value="source.GetValueAt(&quot;PV1:18&quot;)" property="target.Encounters.(1).AdmissionType.Code" action="set"/>
+  <assign value="source.GetValueAt(&quot;PV1:3.1&quot;)" property="target.Encounters.(1).EnteredAt.Code" action="set"/>
+  <assign value="source.GetValueAt(&quot;PV1:44&quot;)" property="target.Encounters.(1).StartTime" action="set"/>
+  <assign value="source.GetValueAt(&quot;PV1:45&quot;)" property="target.Encounters.(1).EndTime" action="set"/>
+  <assign value="source.GetValueAt(&quot;PV1:7.1&quot;)" property="target.Encounters.(1).AttendingClinicians.(1).Code" action="set"/>
+  <assign value="source.GetValueAt(&quot;PV1:7.2&quot;)" property="target.Encounters.(1).AttendingClinicians.(1).Description" action="set"/>
+
+  <if condition='source.GetValueAt("MSH:9.2") = "O01"'>
+    <true>
+      <assign value="source.GetValueAt(&quot;ORC:2&quot;)" property="target.Procedures.(1).ExternalId" action="set"/>
+      <assign value="source.GetValueAt(&quot;OBR:4.1&quot;)" property="target.Procedures.(1).Procedure.Code" action="set"/>
+      <assign value="source.GetValueAt(&quot;OBR:4.2&quot;)" property="target.Procedures.(1).Procedure.Description" action="set"/>
+      <assign value="source.GetValueAt(&quot;OBR:36&quot;)" property="target.Procedures.(1).ProcedureTime" action="set"/>
+    </true>
+  </if>
+</transform>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CardioFlow Live Board</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --panel: rgba(255, 250, 242, 0.84);
+      --line: rgba(22, 48, 63, 0.12);
+      --ink: #16303f;
+      --muted: #617480;
+      --accent: #b6412c;
+      --shadow: 0 20px 60px rgba(25, 42, 52, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(182, 65, 44, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(13, 122, 109, 0.18), transparent 24%),
+        linear-gradient(135deg, #f8f2e9 0%, #eef2ec 48%, #ece6da 100%);
+      min-height: 100vh;
+    }
+
+    .shell {
+      width: min(1320px, calc(100% - 32px));
+      margin: 24px auto 40px;
+    }
+
+    .hero, .grid, .board, .scenario-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero { grid-template-columns: 1.15fr 0.85fr; margin-bottom: 20px; }
+    .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 20px; }
+    .board { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 20px; }
+    .scenario-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .hero-copy, .ops, .column, .scenario { padding: 24px; }
+
+    .eyebrow {
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    h1 { margin: 0 0 12px; font-size: clamp(34px, 4vw, 56px); line-height: 0.95; }
+    h2 { margin: 0; font-size: 22px; }
+    .lead, .ops p, .scenario p, .meta, .status, .column-head span, .footer-note {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    input, select {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.7);
+      padding: 14px 16px;
+      font: inherit;
+      color: var(--ink);
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font: inherit;
+      cursor: pointer;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), #d3624d);
+      margin-top: 12px;
+    }
+
+    .stat { padding: 20px; position: relative; overflow: hidden; }
+    .stat::before {
+      content: "";
+      position: absolute;
+      inset: auto -40px -70px auto;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.24);
+    }
+    .stat small { display: block; text-transform: uppercase; letter-spacing: 0.16em; color: rgba(255,255,255,0.74); margin-bottom: 14px; font-size: 12px; }
+    .stat strong { display: block; font-size: 44px; color: #fff; }
+    .awaiting { background: linear-gradient(135deg, #c27b12, #e2a23a); }
+    .surgery { background: linear-gradient(135deg, #b6412c, #da6c56); }
+    .postop { background: linear-gradient(135deg, #0d7a6d, #1ba798); }
+
+    .column-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cards { display: grid; gap: 12px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(255,255,255,0.7);
+    }
+    .card h3 { margin: 0 0 4px; font-size: 19px; }
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      margin: 3px 6px 0 0;
+      background: rgba(22, 48, 63, 0.08);
+      color: var(--ink);
+    }
+    .empty { color: var(--muted); font-style: italic; padding: 18px 0; }
+    .footer-note { margin-top: 18px; text-align: right; }
+
+    @media (max-width: 980px) {
+      .hero, .grid, .board, .scenario-grid, .fields { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <div class="panel hero-copy">
+        <div class="eyebrow">CardioFlow Live Board</div>
+        <h1>Real-time surgical command center, connected to IRIS without browser auth.</h1>
+        <p class="lead">This product page is served by a local front gateway that proxies requests into IRIS. The browser never sends credentials to IRIS directly, and all live data shown below comes from the U.S. scenario packs currently seeded in the database.</p>
+      </div>
+      <div class="panel ops">
+        <h2>Operational controls</h2>
+        <p>Filter the active patient flow by hospital, status, scenario pack, or text search. Use refresh whenever you reseed or update the simulation.</p>
+        <div class="fields">
+          <input id="patientSearch" placeholder="Search patient or case ID" />
+          <select id="hospitalFilter"><option value="ALL">All hospitals</option></select>
+          <select id="statusFilter">
+            <option value="ALL">All statuses</option>
+            <option value="AWAITING">Waiting</option>
+            <option value="IN_SURGERY">In surgery</option>
+            <option value="POST_OP">Post-op</option>
+          </select>
+          <select id="scenarioFilter">
+            <option value="ALL">All scenario packs</option>
+            <option value="EMERGENCY_ESCALATION">Emergency escalation</option>
+            <option value="DELAYED_SURGERY">Delayed surgery</option>
+            <option value="RECOVERY_ESCALATION">Recovery escalation</option>
+          </select>
+        </div>
+        <button id="refreshButton">Refresh live board</button>
+        <div id="status" class="status">Waiting for the first IRIS refresh.</div>
+        <div id="filterMeta" class="status">All active cases</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="panel stat awaiting"><small>Waiting</small><strong id="countAwaiting">0</strong></article>
+      <article class="panel stat surgery"><small>In surgery</small><strong id="countSurgery">0</strong></article>
+      <article class="panel stat postop"><small>Post-op</small><strong id="countPostOp">0</strong></article>
+    </section>
+
+    <section class="board">
+      <article class="panel column">
+        <div class="column-head"><h2>Pre-op queue</h2><span id="preopMeta">0 cases</span></div>
+        <div id="preopCards" class="cards"></div>
+      </article>
+      <article class="panel column">
+        <div class="column-head"><h2>Operating rooms</h2><span id="intraopMeta">0 cases</span></div>
+        <div id="intraopCards" class="cards"></div>
+      </article>
+      <article class="panel column">
+        <div class="column-head"><h2>Recovery</h2><span id="postopMeta">0 cases</span></div>
+        <div id="postopCards" class="cards"></div>
+      </article>
+    </section>
+
+    <section class="scenario-grid">
+      <article class="panel scenario">
+        <h2>Emergency escalation</h2>
+        <p>Tracks critical pre-op prioritization, active valve repair, and unstable post-op vitals at Boston Heart.</p>
+      </article>
+      <article class="panel scenario">
+        <h2>Delayed surgery</h2>
+        <p>Shows backlog pressure, extended queue time, and slower recovery at Chicago Cardiac.</p>
+      </article>
+      <article class="panel scenario">
+        <h2>Recovery escalation</h2>
+        <p>Highlights a smooth pre-op intake, active OR load, and escalated post-op neuro checks at Seattle Med.</p>
+      </article>
+    </section>
+
+    <div class="footer-note">Connected through local gateway to IRIS API</div>
+  </div>
+
+  <script>
+    const apiBase = `${window.location.origin}/api/cardio`;
+    const ids = {
+      countAwaiting: document.getElementById('countAwaiting'),
+      countSurgery: document.getElementById('countSurgery'),
+      countPostOp: document.getElementById('countPostOp'),
+      preopMeta: document.getElementById('preopMeta'),
+      intraopMeta: document.getElementById('intraopMeta'),
+      postopMeta: document.getElementById('postopMeta'),
+      preopCards: document.getElementById('preopCards'),
+      intraopCards: document.getElementById('intraopCards'),
+      postopCards: document.getElementById('postopCards'),
+      status: document.getElementById('status'),
+      filterMeta: document.getElementById('filterMeta'),
+      patientSearch: document.getElementById('patientSearch'),
+      hospitalFilter: document.getElementById('hospitalFilter'),
+      statusFilter: document.getElementById('statusFilter'),
+      scenarioFilter: document.getElementById('scenarioFilter'),
+      refreshButton: document.getElementById('refreshButton')
+    };
+
+    let overviewRows = [];
+
+    function friendlyScenario(tag) {
+      return {
+        EMERGENCY_ESCALATION: 'Emergency escalation',
+        DELAYED_SURGERY: 'Delayed surgery',
+        RECOVERY_ESCALATION: 'Recovery escalation'
+      }[tag] || tag;
+    }
+
+    async function fetchJson(path) {
+      const response = await fetch(`${apiBase}${path}`);
+      if (!response.ok) {
+        const body = await response.text();
+        throw new Error(`${response.status} ${response.statusText} ${body}`.trim());
+      }
+      return response.json();
+    }
+
+    function renderPills(values) {
+      if (!values || values === '[]') {
+        return '';
+      }
+      try {
+        const parsed = JSON.parse(values);
+        return parsed.map((item) => `<span class="pill">${item}</span>`).join('');
+      } catch {
+        return `<span class="pill">${values}</span>`;
+      }
+    }
+
+    function renderCards(target, rows, template) {
+      if (!rows.length) {
+        target.innerHTML = '<div class="empty">No cases are currently available for this panel.</div>';
+        return;
+      }
+      target.innerHTML = rows.map(template).join('');
+    }
+
+    function populateHospitalFilter(rows) {
+      const selected = ids.hospitalFilter.value || 'ALL';
+      const hospitals = [...new Set(rows.map((row) => row.HospitalCode).filter(Boolean))].sort();
+      ids.hospitalFilter.innerHTML = '<option value="ALL">All hospitals</option>' + hospitals.map((hospital) => `<option value="${hospital}">${hospital}</option>`).join('');
+      ids.hospitalFilter.value = hospitals.includes(selected) ? selected : 'ALL';
+    }
+
+    function applyFilters(rows) {
+      const search = ids.patientSearch.value.trim().toLowerCase();
+      const hospital = ids.hospitalFilter.value;
+      const status = ids.statusFilter.value;
+      const scenario = ids.scenarioFilter.value;
+      return rows.filter((row) => {
+        const patientId = (row.PatientId || '').toLowerCase();
+        const patientName = (row.PatientName || '').toLowerCase();
+        const matchesSearch = !search || patientId.includes(search) || patientName.includes(search);
+        const matchesHospital = hospital === 'ALL' || row.HospitalCode === hospital;
+        const matchesStatus = status === 'ALL' || row.Status === status;
+        const matchesScenario = scenario === 'ALL' || row.ScenarioTag === scenario;
+        return matchesSearch && matchesHospital && matchesStatus && matchesScenario;
+      });
+    }
+
+    function renderFilteredBoard(rows) {
+      const filtered = applyFilters(rows);
+      const preopRows = filtered.filter((row) => row.Status === 'AWAITING');
+      const intraopRows = filtered.filter((row) => row.Status === 'IN_SURGERY');
+      const postopRows = filtered.filter((row) => row.Status === 'POST_OP');
+
+      ids.countAwaiting.textContent = preopRows.length;
+      ids.countSurgery.textContent = intraopRows.length;
+      ids.countPostOp.textContent = postopRows.length;
+      ids.preopMeta.textContent = `${preopRows.length} cases`;
+      ids.intraopMeta.textContent = `${intraopRows.length} cases`;
+      ids.postopMeta.textContent = `${postopRows.length} cases`;
+      ids.filterMeta.textContent = `${filtered.length} visible cases across ${new Set(filtered.map((row) => row.HospitalCode)).size || 0} hospitals`;
+
+      renderCards(ids.preopCards, preopRows, (row) => `
+        <article class="card">
+          <h3>${row.PatientName}</h3>
+          <div class="meta">${row.PatientId} · ${row.HospitalCode}</div>
+          <div>Estimated wait: <strong>${row.WaitingMinutes} min</strong></div>
+          <div><span class="pill">${friendlyScenario(row.ScenarioTag)}</span></div>
+          <div class="meta">Updated: ${row.EventTime}</div>
+        </article>
+      `);
+
+      renderCards(ids.intraopCards, intraopRows, (row) => `
+        <article class="card">
+          <h3>${row.PatientName}</h3>
+          <div class="meta">${row.PatientId} · ${row.HospitalCode}</div>
+          <div>Room / code: <strong>${row.SurgeryRoom}</strong></div>
+          <div><span class="pill">${friendlyScenario(row.ScenarioTag)}</span></div>
+          <div>${renderPills(row.MedicalTeam)}</div>
+          <div class="meta">Updated: ${row.EventTime}</div>
+        </article>
+      `);
+
+      renderCards(ids.postopCards, postopRows, (row) => `
+        <article class="card">
+          <h3>${row.PatientName}</h3>
+          <div class="meta">${row.PatientId} · ${row.HospitalCode}</div>
+          <div><span class="pill">${friendlyScenario(row.ScenarioTag)}</span></div>
+          <div>${renderPills(row.VitalSignAlerts) || '<span class="pill">No active alerts</span>'}</div>
+          <div class="meta">Updated: ${row.EventTime}</div>
+        </article>
+      `);
+    }
+
+    async function loadBoard() {
+      ids.status.textContent = 'Refreshing data from IRIS...';
+      try {
+        const overview = await fetchJson('/dashboards/overview');
+        overviewRows = overview.overview || [];
+        populateHospitalFilter(overviewRows);
+        renderFilteredBoard(overviewRows);
+        ids.status.textContent = `Board refreshed successfully at ${new Date().toLocaleTimeString('en-US')}.`;
+      } catch (error) {
+        ids.status.textContent = `API request failed: ${error.message}`;
+      }
+    }
+
+    ids.refreshButton.addEventListener('click', loadBoard);
+    ids.patientSearch.addEventListener('input', () => renderFilteredBoard(overviewRows));
+    ids.hospitalFilter.addEventListener('change', () => renderFilteredBoard(overviewRows));
+    ids.statusFilter.addEventListener('change', () => renderFilteredBoard(overviewRows));
+    ids.scenarioFilter.addEventListener('change', () => renderFilteredBoard(overviewRows));
+    loadBoard();
+  </script>
+</body>
+</html>
