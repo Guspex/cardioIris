@@ -2,6 +2,17 @@ $ErrorActionPreference = 'Stop'
 
 docker compose -f docker/docker-compose.yml up -d
 
+# Enable Interoperability (Ensemble) in USER namespace
+$enableEnsemble = @'
+try {
+    do ##class(%EnsembleMgr).EnableNamespace("USER", 1)
+    write "Ensemble enabled in USER",!
+} catch ex {
+    write "Ensemble already enabled or unavailable: ", ex.DisplayString(),!
+}
+halt
+'@
+
 $loadAnalytics = @'
 set sc=##class(%SYSTEM.OBJ).Load("/home/irisowner/src/CardioFlow/Analytics/SurgeryStatus.cls","ck")
 write $SYSTEM.Status.GetErrorText(sc),!
@@ -14,6 +25,18 @@ write $SYSTEM.Status.GetErrorText(sc),!
 halt
 '@
 
+$loadFHIRBuilder = @'
+set sc=##class(%SYSTEM.OBJ).Load("/home/irisowner/src/CardioFlow/FHIR/ResourceBuilder.cls","ck")
+write $SYSTEM.Status.GetErrorText(sc),!
+halt
+'@
+
+$loadFHIRSetup = @'
+set sc=##class(%SYSTEM.OBJ).Load("/home/irisowner/src/CardioFlow/Setup/FHIRSetup.cls","ck")
+write $SYSTEM.Status.GetErrorText(sc),!
+halt
+'@
+
 $loadApi = @'
 set sc=##class(%SYSTEM.OBJ).Load("/home/irisowner/src/CardioFlow/API/DashboardDispatch.cls","ck")
 write $SYSTEM.Status.GetErrorText(sc),!
@@ -22,6 +45,20 @@ halt
 
 $loadUi = @'
 set sc=##class(%SYSTEM.OBJ).Load("/home/irisowner/src/CardioFlow/UI/DashboardPage.cls","ck")
+write $SYSTEM.Status.GetErrorText(sc),!
+halt
+'@
+
+$loadInterop = @'
+set sc=##class(%SYSTEM.OBJ).Load("/home/irisowner/src/CardioFlow/Interop/AgentRequest.cls","ck")
+write $SYSTEM.Status.GetErrorText(sc),!
+set sc=##class(%SYSTEM.OBJ).Load("/home/irisowner/src/CardioFlow/Interop/AgentResponse.cls","ck")
+write $SYSTEM.Status.GetErrorText(sc),!
+set sc=##class(%SYSTEM.OBJ).Load("/home/irisowner/src/CardioFlow/Interop/AgentProcess.cls","ck")
+write $SYSTEM.Status.GetErrorText(sc),!
+set sc=##class(%SYSTEM.OBJ).Load("/home/irisowner/src/CardioFlow/Interop/FHIROperation.cls","ck")
+write $SYSTEM.Status.GetErrorText(sc),!
+set sc=##class(%SYSTEM.OBJ).Load("/home/irisowner/src/CardioFlow/Interop/Production.cls","ck")
 write $SYSTEM.Status.GetErrorText(sc),!
 halt
 '@
@@ -68,9 +105,24 @@ for { quit:'rs.%Next()  write rs.%Get("PatientId"),"|",rs.%Get("Status"),"|",rs.
 halt
 '@
 
-$loadAnalytics | docker exec -i cardioflow-iris iris session IRIS -U USER
-$loadRunner | docker exec -i cardioflow-iris iris session IRIS -U USER
-$loadApi | docker exec -i cardioflow-iris iris session IRIS -U USER
-$loadUi | docker exec -i cardioflow-iris iris session IRIS -U USER
+$syncFHIR = @'
+try {
+    set sc=##class(CardioFlow.FHIR.ResourceBuilder).SyncAllToFHIR()
+    write $SYSTEM.Status.GetErrorText(sc),!
+} catch ex {
+    write "FHIR sync skipped: ", ex.DisplayString(),!
+}
+halt
+'@
+
+$enableEnsemble | docker exec -i cardioflow-iris iris session IRIS -U %SYS
+$loadAnalytics  | docker exec -i cardioflow-iris iris session IRIS -U USER
+$loadRunner     | docker exec -i cardioflow-iris iris session IRIS -U USER
+$loadFHIRBuilder | docker exec -i cardioflow-iris iris session IRIS -U USER
+$loadFHIRSetup  | docker exec -i cardioflow-iris iris session IRIS -U USER
+$loadApi        | docker exec -i cardioflow-iris iris session IRIS -U USER
+$loadUi         | docker exec -i cardioflow-iris iris session IRIS -U USER
+$loadInterop    | docker exec -i cardioflow-iris iris session IRIS -U USER
 $configureSecurity | docker exec -i cardioflow-iris iris session IRIS -U %SYS
-$runSimulation | docker exec -i cardioflow-iris iris session IRIS -U USER
+$runSimulation  | docker exec -i cardioflow-iris iris session IRIS -U USER
+$syncFHIR       | docker exec -i cardioflow-iris iris session IRIS -U USER

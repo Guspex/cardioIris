@@ -18,6 +18,7 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
   <Route Url="/dashboards/summary" Method="GET" Call="GetSummary" Cors="true" />
   <Route Url="/patient/:id/status" Method="GET" Call="GetPatient" Cors="true" />
   <Route Url="/health" Method="GET" Call="Health" Cors="true" />
+  <Route Url="/ai/analyze/:patientId" Method="GET" Call="AnalyzePatient" Cors="true" />
 </Routes>
 }
 
@@ -119,6 +120,75 @@ ClassMethod Health() As %Status
     do obj.%Set("namespace", $namespace)
     write obj.%ToJSON()
     quit 1
+}
+
+ClassMethod AnalyzePatient(patientId As %String) As %Status
+{
+    Set sc = $$$OK
+    Try {
+        Set stmt = ##class(%SQL.Statement).%New()
+        Set prepSc = stmt.%Prepare("SELECT TOP 1 PatientId, PatientName, Status, HospitalCode, ScenarioTag FROM CardioFlow_Analytics.SurgeryStatus WHERE PatientId = ? ORDER BY EventTime DESC")
+        If $SYSTEM.Status.IsError(prepSc) {
+            Do ..ReportHttpStatusCode(500, "Query failed")
+            Return prepSc
+        }
+        Set rs = stmt.%Execute(patientId)
+        If 'rs.%Next() {
+            Do ..ReportHttpStatusCode(404, "Patient not found")
+            Return $$$OK
+        }
+
+        Set record = ##class(CardioFlow.Analytics.SurgeryStatus).%New()
+        Set record.PatientId    = rs.%Get("PatientId")
+        Set record.PatientName  = rs.%Get("PatientName")
+        Set record.Status       = rs.%Get("Status")
+        Set record.HospitalCode = rs.%Get("HospitalCode")
+        Set record.ScenarioTag  = rs.%Get("ScenarioTag")
+
+        Set patient   = ##class(CardioFlow.FHIR.ResourceBuilder).BuildPatient(record)
+        Set procedure = ##class(CardioFlow.FHIR.ResourceBuilder).BuildProcedure(record)
+        Set obs       = ##class(CardioFlow.FHIR.ResourceBuilder).BuildObservation(record)
+
+        Set entries = ##class(%DynamicArray).%New()
+        Do entries.%Push({"resource": (patient)})
+        Do entries.%Push({"resource": (procedure)})
+        Do entries.%Push({"resource": (obs)})
+
+        Set bundle = ##class(%DynamicObject).%New()
+        Do bundle.%Set("resourceType", "Bundle")
+        Do bundle.%Set("type", "collection")
+        Do bundle.%Set("entry", entries)
+
+        Set apiKey = $Get(^CardioFlow.Config("ANTHROPIC_API_KEY"), "")
+        If apiKey = "" { Set apiKey = ##class(%SYSTEM.Util).GetEnviron("ANTHROPIC_API_KEY") }
+
+        Set resultJson = ..CallAIAgent(bundle.%ToJSON(), apiKey)
+        Write resultJson
+    } Catch ex {
+        Set sc = ex.AsStatus()
+        Do ..ReportHttpStatusCode(500, $SYSTEM.Status.GetErrorText(sc))
+    }
+    Return sc
+}
+
+ClassMethod CallAIAgent(bundleJson As %String, apiKey As %String) As %String [ Language = python ]
+{
+    import sys, os, json
+    sys.path.insert(0, '/home/irisowner/src/CardioFlow/AI')
+    try:
+        from Agent import analyze_patient_bundle
+        bundle = json.loads(bundleJson)
+        result = analyze_patient_bundle(bundle, apiKey)
+        return json.dumps(result)
+    except Exception as e:
+        return json.dumps({
+            "error": str(e),
+            "riskLevel": "UNKNOWN",
+            "recommendation": "AI agent unavailable",
+            "reasoning": str(e),
+            "suggestedNextStatus": "",
+            "escalate": False
+        })
 }
 
 ClassMethod WriteQueryAsJson(sql As %String, key As %String) As %Status [ Private ]

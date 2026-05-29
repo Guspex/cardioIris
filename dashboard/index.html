@@ -142,6 +142,38 @@
     @media (max-width: 980px) {
       .hero, .grid, .board, .scenario-grid, .fields { grid-template-columns: 1fr; }
     }
+
+    .ai-btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px 14px;
+      font-size: 13px;
+      background: linear-gradient(135deg, #1a4f7a, #2471a3);
+    }
+    .ai-result {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(36, 113, 163, 0.06);
+      border: 1px solid rgba(36, 113, 163, 0.14);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .risk-badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .risk-LOW      { background: #e8f5e9; color: #1b5e20; }
+    .risk-MEDIUM   { background: #fff8e1; color: #e65100; }
+    .risk-HIGH     { background: #fbe9e7; color: #b71c1c; }
+    .risk-CRITICAL { background: #f44336; color: #fff; }
+    .risk-UNKNOWN  { background: rgba(22,48,63,0.07); color: var(--muted); }
   </style>
 </head>
 <body>
@@ -320,6 +352,8 @@
           <div>Estimated wait: <strong>${row.WaitingMinutes} min</strong></div>
           <div><span class="pill">${friendlyScenario(row.ScenarioTag)}</span></div>
           <div class="meta">Updated: ${row.EventTime}</div>
+          <button class="ai-btn" onclick="analyzePatient('${row.PatientId}', 'preop')">AI Analysis</button>
+          <div class="ai-result" id="ai-${row.PatientId}-preop" style="display:none"></div>
         </article>
       `);
 
@@ -331,6 +365,8 @@
           <div><span class="pill">${friendlyScenario(row.ScenarioTag)}</span></div>
           <div>${renderPills(row.MedicalTeam)}</div>
           <div class="meta">Updated: ${row.EventTime}</div>
+          <button class="ai-btn" onclick="analyzePatient('${row.PatientId}', 'intraop')">AI Analysis</button>
+          <div class="ai-result" id="ai-${row.PatientId}-intraop" style="display:none"></div>
         </article>
       `);
 
@@ -341,6 +377,8 @@
           <div><span class="pill">${friendlyScenario(row.ScenarioTag)}</span></div>
           <div>${renderPills(row.VitalSignAlerts) || '<span class="pill">No active alerts</span>'}</div>
           <div class="meta">Updated: ${row.EventTime}</div>
+          <button class="ai-btn" onclick="analyzePatient('${row.PatientId}', 'postop')">AI Analysis</button>
+          <div class="ai-result" id="ai-${row.PatientId}-postop" style="display:none"></div>
         </article>
       `);
     }
@@ -355,6 +393,29 @@
         ids.status.textContent = `Board refreshed successfully at ${new Date().toLocaleTimeString('en-US')}.`;
       } catch (error) {
         ids.status.textContent = `API request failed: ${error.message}`;
+      }
+    }
+
+    async function analyzePatient(patientId, suffix) {
+      const el = document.getElementById(`ai-${patientId}-${suffix}`);
+      if (!el) return;
+      el.style.display = 'block';
+      el.innerHTML = '<em style="color:var(--muted)">Analyzing with Claude AI...</em>';
+      try {
+        const res = await fetch(`${apiBase}/ai/analyze/${encodeURIComponent(patientId)}`);
+        const data = await res.json();
+        if (data.error && !data.riskLevel) throw new Error(data.error);
+        const escalateFlag = data.escalate
+          ? ' &nbsp;<strong style="color:#b6412c">&#9650; ESCALATE</strong>'
+          : '';
+        el.innerHTML = `
+          <div><span class="risk-badge risk-${data.riskLevel}">${data.riskLevel}</span>${escalateFlag}</div>
+          <div style="margin:5px 0"><strong>${data.recommendation}</strong></div>
+          <div style="color:var(--muted);margin-bottom:4px">${data.reasoning}</div>
+          <div style="font-size:12px;color:var(--muted)">Suggested next: ${data.suggestedNextStatus || '—'}</div>
+        `;
+      } catch (err) {
+        el.innerHTML = `<em style="color:#b6412c">Analysis failed: ${err.message}</em>`;
       }
     }
 
